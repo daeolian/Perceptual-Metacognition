@@ -6,6 +6,99 @@
  
 **/
 
+
+/* ************************************ */
+/* Define experimental variables */
+/* ************************************ */
+// generic task variables
+var sumInstructTime = 0 //ms
+var instructTimeThresh = 0 ///in seconds
+var credit_var = true
+
+// number of confidence option 
+var num_conf_scale = 4; // either 3 or 4
+
+// task specific variables
+var contrast = 0.1; // the initial value, which will be adjusted to keep participants' performance at 70%
+var correct_counter = 0
+var current_trial = 0
+var choices = [37, 39]
+var curr_data = {}
+
+// spread 20 catch trials in a random location,
+// but no catch trials in the first 20
+// also include the hardest trials too
+if (flag_debug == false) {
+    // not debugging -- actual setting
+    var practice_len = 10;
+    var exp_len = 120;
+    var trial_idx = Array.apply(null, {
+        length: exp_len
+    }).map(Number.call, Number);
+    trial_idx = shuffle(trial_idx.slice(20));
+    var catch_trials = trial_idx.slice(0, 20);
+    var impossible_trials = trial_idx.slice(20, 40);
+} else {
+    // debugging
+    var practice_len = 4;
+    var exp_len = 24;
+    var trial_idx = Array.apply(null, {
+        length: exp_len
+    }).map(Number.call, Number);
+    trial_idx = shuffle(trial_idx);
+    var catch_trials = trial_idx.slice(0, 4);
+    var impossible_trials = trial_idx.slice(4, 8);
+}
+
+var practice_seq = [];
+for (var ii = 0; ii < (practice_len / 2); ii++) {
+    practice_seq.push(0);
+    practice_seq.push(1);
+}
+practice_seq = shuffle(practice_seq);
+var mainexp_seq = [];
+for (var ii = 0; ii < (exp_len / 2); ii++) {
+    mainexp_seq.push(0);
+    mainexp_seq.push(1);
+}
+mainexp_seq = shuffle(mainexp_seq);
+
+
+if (num_conf_scale == 3) {
+    var confidence_choices = [49, 50, 51]
+    var confidence_string = ['1_not_confident', '2_somewhat_confident', '3_very_confident'];
+    var confidence_response_area =
+        '<div class = response_div>' +
+        '<button class = response_button id = Confidence_1><b>(1)</b><br>Not<br>confident</button>' +
+        '<button class = response_button id = Confidence_2><b>(2)</b><br>Somewhat<br>confident</button>' +
+        '<button class = response_button id = Confidence_3><b>(3)</b><br>Very<br>confident</button></div>'
+    var confidence_response_area_key =
+        '<div class = response_div>' +
+        '<button class = response_button_key id = Confidence_1><b>(1)</b><br>Not<br>confident</button>' +
+        '<button class = response_button_key id = Confidence_2><b>(2)</b><br>Somewhat<br>confident</button>' +
+        '<button class = response_button_key id = Confidence_3><b>(3)</b><br>Very<br>confident</button></div>'
+
+} else if (num_conf_scale == 4) {
+    var confidence_choices = [49, 50, 51, 52]
+    var confidence_string = ['1_not_confident', '2_slightly_confident', '3_moderately_confident', '4_moderately_confident'];
+    var confidence_response_area =
+        '<div class = response_div>' +
+        '<button class = response_button id = Confidence_1><b>(1)</b><br>Not<br>confident</button>' +
+        '<button class = response_button id = Confidence_2><b>(2)</b><br>Slightly<br>confident</button>' +
+        '<button class = response_button id = Confidence_3><b>(3)</b><br>Moderately<br>confident</button>' +
+        '<button class = response_button id = Confidence_4><b>(4)</b><br>Very<br>confident</button></div>'
+    var confidence_response_area_key =
+        '<div class = response_div>' +
+        '<button class = response_button_key id = Confidence_1><b>(1)</b><br>Not<br>confident</button>' +
+        '<button class = response_button_key id = Confidence_2><b>(2)</b><br>Slightly<br>confident</button>' +
+        '<button class = response_button_key id = Confidence_3><b>(3)</b><br>Moderately<br>confident</button>' +
+        '<button class = response_button_key id = Confidence_4><b>(4)</b><br>Very<br>confident</button></div>'
+} else {
+    console.error('Wrong number of confidence scale!');
+    alert('Wrong number of confidence scale!')
+}
+
+
 /* ************************************ */
 /* Define helper functions */
 /* ************************************ */
@@ -402,97 +495,6 @@ var afterTrialUpdate = function (data) {
             }
         }
     }
-}
-
-/* ************************************ */
-/* Define experimental variables */
-/* ************************************ */
-// generic task variables
-var sumInstructTime = 0 //ms
-var instructTimeThresh = 0 ///in seconds
-var credit_var = true
-
-// number of confidence option 
-var num_conf_scale = 3; // either 3 or 4
-
-// task specific variables
-var contrast = 0.1;
-var correct_counter = 0
-var current_trial = 0
-var choices = [37, 39]
-var curr_data = {}
-
-// spread 20 catch trials in a random location,
-// but no catch trials in the first 20
-// also include the hardest trials too
-if (flag_debug == false) {
-    // not debugging -- actual setting
-    var practice_len = 10;
-    var exp_len = 120;
-    var trial_idx = Array.apply(null, {
-        length: exp_len
-    }).map(Number.call, Number);
-    trial_idx = shuffle(trial_idx.slice(20));
-    var catch_trials = trial_idx.slice(0, 20);
-    var impossible_trials = trial_idx.slice(20, 40);
-} else {
-    // debugging
-    var practice_len = 4;
-    var exp_len = 24;
-    var trial_idx = Array.apply(null, {
-        length: exp_len
-    }).map(Number.call, Number);
-    trial_idx = shuffle(trial_idx);
-    var catch_trials = trial_idx.slice(0, 4);
-    var impossible_trials = trial_idx.slice(4, 8);
-}
-
-var practice_seq = [];
-for (var ii = 0; ii < (practice_len / 2); ii++) {
-    practice_seq.push(0);
-    practice_seq.push(1);
-}
-practice_seq = shuffle(practice_seq);
-var mainexp_seq = [];
-for (var ii = 0; ii < (exp_len / 2); ii++) {
-    mainexp_seq.push(0);
-    mainexp_seq.push(1);
-}
-mainexp_seq = shuffle(mainexp_seq);
-
-
-if (num_conf_scale == 3) {
-    var confidence_choices = [49, 50, 51]
-    var confidence_string = ['1_not_confident', '2_somewhat_confident', '3_very_confident'];
-    var confidence_response_area =
-        '<div class = response_div>' +
-        '<button class = response_button id = Confidence_1><b>(1)</b><br>Not<br>confident</button>' +
-        '<button class = response_button id = Confidence_2><b>(2)</b><br>Somewhat<br>confident</button>' +
-        '<button class = response_button id = Confidence_3><b>(3)</b><br>Very<br>confident</button></div>'
-    var confidence_response_area_key =
-        '<div class = response_div>' +
-        '<button class = response_button_key id = Confidence_1><b>(1)</b><br>Not<br>confident</button>' +
-        '<button class = response_button_key id = Confidence_2><b>(2)</b><br>Somewhat<br>confident</button>' +
-        '<button class = response_button_key id = Confidence_3><b>(3)</b><br>Very<br>confident</button></div>'
-
-} else if (num_conf_scale == 4) {
-    var confidence_choices = [49, 50, 51, 52]
-    var confidence_string = ['1_not_confident', '2_slightly_confident', '3_moderately_confident', '4_moderately_confident'];
-    var confidence_response_area =
-        '<div class = response_div>' +
-        '<button class = response_button id = Confidence_1><b>(1)</b><br>Not<br>confident</button>' +
-        '<button class = response_button id = Confidence_2><b>(2)</b><br>Slightly<br>confident</button>' +
-        '<button class = response_button id = Confidence_3><b>(3)</b><br>Moderately<br>confident</button>' +
-        '<button class = response_button id = Confidence_4><b>(4)</b><br>Very<br>confident</button></div>'
-    var confidence_response_area_key =
-        '<div class = response_div>' +
-        '<button class = response_button_key id = Confidence_1><b>(1)</b><br>Not<br>confident</button>' +
-        '<button class = response_button_key id = Confidence_2><b>(2)</b><br>Slightly<br>confident</button>' +
-        '<button class = response_button_key id = Confidence_3><b>(3)</b><br>Moderately<br>confident</button>' +
-        '<button class = response_button_key id = Confidence_4><b>(4)</b><br>Very<br>confident</button></div>'
-} else {
-    console.error('Wrong number of confidence scale!');
-    alert('Wrong number of confidence scale!')
 }
 
 
