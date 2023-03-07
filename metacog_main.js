@@ -517,7 +517,7 @@ var post_task_block = {
 */
 
 var feedback_instruct_text =
-    'This task will take about 10 minutes. Press <strong>enter</strong> to begin.'
+    'This task will take about 5 minutes. Press <strong>enter</strong> to begin.'
 var feedback_instruct_block = {
     type: 'poldrack-text',
     data: {
