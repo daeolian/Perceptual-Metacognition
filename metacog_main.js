@@ -580,7 +580,7 @@ var start_test_block = {
     },
     timing_response: 180000,
     text: '<div class = cntexpbox><p class = block-text>We are done with practice. ' +
-        'We will now start the main task of <b>120 trials</b>. </p>' +
+        'We will now start the main task of <b>60 trials</b>. </p>' +
         '<p class = block-text>This will be identical to the practice - ' +
         'your task is to indicate where the grating is by pressing the arrow keys. ' +
         'After you make your choice, rate how confident you are that your response was accurate.</p>' +
