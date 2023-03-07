@@ -6,6 +6,7 @@
  
 **/
 
+var flag_debug = false;
 
 /* ************************************ */
 /* Define experimental variables */
@@ -31,7 +32,7 @@ var curr_data = {}
 if (flag_debug == false) {
     // not debugging -- actual setting
     var practice_len = 10;
-    var exp_len = 120;
+    var exp_len = 60;
     var trial_idx = Array.apply(null, {
         length: exp_len
     }).map(Number.call, Number);
@@ -103,7 +104,6 @@ if (num_conf_scale == 3) {
 /* Define helper functions */
 /* ************************************ */
 
-var flag_debug = true;
 
 /* from poldrack_utils.js */
 
